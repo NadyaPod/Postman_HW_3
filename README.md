@@ -3,7 +3,7 @@
 ## :small_blue_diamond:HW during Vadim Ksendzov course:small_blue_diamond:
 
 ```
-Enviroment:
+Environment:
 url: http://162.55.220.72:5005
 ```
 ### /login
