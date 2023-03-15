@@ -7,10 +7,10 @@ Enviroment:
 url: http://162.55.220.72:5005
 ```
 ### /login
-
 Отправить запрос (POST).
+```
 {{url}}/login
-
+```
 Body form-data:
 - login: 123
 - password: 456
@@ -26,9 +26,11 @@ pm.environment.set("token", resp.token);
 ### /user_info
 
 Отправить запрос (POST)
+```
 {{url}}/user_info
-```json
+```
 Raw JSON:
+```json
 {   
   "salary": 40000,
   "name":"Vasya",
@@ -131,8 +133,9 @@ pm.environment.set("salary", resp.person["u_salary_1_5_year"]);
 ### /new_data
 
 Отправить запрос (POST)
+```
 {{url}}/new_data
-
+```
 Body form-data:
 - age: 35
 - salary: 160000
@@ -203,8 +206,9 @@ pm.test("Проверить, что 2-й элемент массива salary б
 ### /test_pet_info
 
 Отправить запрос (POST)
+```
 {{url}}/test_pet_info
-
+```
 Body form-data:
 - age: 35
 - weight: 60
@@ -266,8 +270,9 @@ Object.entries(weigthCoeffs).forEach(([type, coeff]) => {
 ### /get_test_user
 
 Отправить запрос (POST)
+```
 {{url}}/get_test_user
-
+```
 Body form-data:
 - age: 25
 - salary: {{salary}}
