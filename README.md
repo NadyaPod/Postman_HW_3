@@ -109,10 +109,10 @@ const resp = pm.response.json();
 const req = JSON.parse(pm.request.body.raw);
 
 const salaryCoeffs = {
-    start_qa_salary: 1,
-    qa_salary_after_6_months: 2,
-    qa_salary_after_12_months: 2.9,
-    u_salary_1_5_year: 4
+  start_qa_salary: 1,
+  qa_salary_after_6_months: 2,
+  qa_salary_after_12_months: 2.9,
+  u_salary_1_5_year: 4
 }
 
 Object.entries(salaryCoeffs).forEach(([type, coeff]) => {
@@ -358,12 +358,12 @@ pm.test("Schema is valid", function () {
 pm.environment.set("name", resp.name);
 
 pm.test("Проверить что значение поля name = значению переменной name из окружения", function () {
-    pm.expect(resp.name).to.eql(pm.environment.get("name"));
+  pm.expect(resp.name).to.eql(pm.environment.get("name"));
 });
 ```
 4. Проверить что значение поля age в ответе соответсвует отправленному в запросе значению поля age.
 ```js
 pm.test("Значение поля age в ответе соответсвует отправленному в запросе значению поля age", function () {
-    pm.expect(resp.age).to.eql(req.age);
+  pm.expect(resp.age).to.eql(req.age);
 });
 ```
