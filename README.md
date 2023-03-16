@@ -367,3 +367,144 @@ pm.test("Значение поля age в ответе соответсвует 
   pm.expect(resp.age).to.eql(req.age);
 });
 ```
+************
+### /currency
+
+Отправить запрос (POST)
+```
+{{url}}/currency
+```
+Body form-data:
+- auth_token: {{token}}
+
+> Response: [ { "Cur_Abbreviation": str, "Cur_ID": int, "Cur_Name": str }...{ "Cur_Abbreviation": str,"Cur_ID": int, "Cur_Name": str } ]
+
+1. Можете взять любой объект из присланного списка, используйте js random.
+```js
+const resp = pm.response.json();
+
+const radomID = Math.floor(Math.random() * resp.length);
+```
+2. В объекте возьмите Cur_ID и передать через окружение в следующий запрос.
+```js
+pm.environment.set("CurID", `${radomID}`);
+```
+************
+### /curr_byn
+Отправить запрос (POST)
+```
+{{url}}//curr_byn
+```
+Body form-data:
+- auth_token: {{token}}
+- curr_code: {{CurID}}
+
+> Response: { "Cur_Abbreviation": str, "Cur_ID": int, "Cur_Name": str, "Cur_OfficialRate": float, "Cur_Scale": int, "Date": str }
+
+1. Статус код 200:
+```js
+pm.test("Status code is 200", function () {
+  pm.response.to.have.status(200);
+});
+```
+2. Проверка структуры json в ответе.
+```js
+const schema = {
+  "type": "object",
+  "properties": {
+    "Cur_Abbreviation": {
+      "type": "string"
+    },
+    "Cur_ID": {
+      "type": "integer"
+    },
+    "Cur_Name": {
+      "type": "string"
+    },
+    "Cur_OfficialRate": {
+      "type": "number"
+    },
+    "Cur_Scale": {
+      "type": "integer"
+    },
+    "Date": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "Cur_Abbreviation",
+    "Cur_ID",
+    "Cur_Name",
+    "Cur_OfficialRate",
+    "Cur_Scale",
+    "Date"
+  ]
+}
+
+pm.test("Schema is valid", function () {
+    pm.response.to.have.jsonSchema(schema);
+});
+```
+
+****
+### /***
+```
+Получить список валют
+Итерировать список валют
+В каждой итерации отправлять запрос на сервер для получения курса каждой валюты
+Если возвращается 500 код, переходим к следующей итреации
+Если получаем 200 код, проверяем response json на наличие поля "Cur_OfficialRate"
+Если поле есть, пишем в консоль инфу про фалюту в виде response
+{
+  "Cur_Abbreviation": str
+  "Cur_ID": int,
+  "Cur_Name": str,
+  "Cur_OfficialRate": float,
+  "Cur_Scale": int,
+  "Date": str
+}
+Переходим к следующей итерации
+```
+```
+Отправить запрос (POST)
+{{url}}/currency
+Body form-data:
+- auth_token: {{token}}
+```
+```js
+const resp = pm.response.json();
+
+resp.forEach((item) => {
+  const postRequest = {
+    url: 'http://54.157.99.22:80/curr_byn',
+    method: 'POST',
+    body: {
+      mode: 'formdata',
+      formdata: [
+        {
+          key: "auth_token",
+          value: pm.environment.get("token")
+        },
+        {
+          key: "curr_code",
+          value: `${item["Cur_ID"]}`
+        }
+      ]
+    }
+  }
+  pm.sendRequest(postRequest, (error, response) => {
+    if (response.code === 500) {
+      return;
+    } else if (response.code === 200) {
+      if (Object.hasOwn(response.json(), "Cur_OfficialRate")) {
+        console.log(response.json())
+      }
+    } else {
+      throw new Error (`Unsupported code ${response.code}`)
+    }
+  })
+});
+```
+
+
+
