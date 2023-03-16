@@ -385,7 +385,7 @@ const resp = pm.response.json();
 
 const radomID = Math.floor(Math.random() * resp.length);
 ```
-2. В объекте возьмите Cur_ID и передать через окружение в следующий запрос.
+2. В объекте возьмите Cur_ID и передайте через окружение в следующий запрос.
 ```js
 pm.environment.set("CurID", `${radomID}`);
 ```
@@ -454,7 +454,7 @@ pm.test("Schema is valid", function () {
 В каждой итерации отправлять запрос на сервер для получения курса каждой валюты
 Если возвращается 500 код, переходим к следующей итреации
 Если получаем 200 код, проверяем response json на наличие поля "Cur_OfficialRate"
-Если поле есть, пишем в консоль инфу про фалюту в виде response
+Если поле есть, пишем в консоль инфу про валюту в виде response
 {
   "Cur_Abbreviation": str
   "Cur_ID": int,
